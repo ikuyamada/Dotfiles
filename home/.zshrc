@@ -1,6 +1,5 @@
 export LANG=ja_JP.UTF-8
 export MAILCHECK=0
-export EDITOR='subl -w -n'
 
 HISTFILE=$HOME/.zsh-history
 HISTSIZE=3000
