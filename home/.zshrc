@@ -68,6 +68,14 @@ case ${OSTYPE} in
         ;;
     linux*)
         alias ls="ls --color"
+        settitle() {
+            printf "\033k$1\033\\"
+        }
+        ssh() {
+            settitle "$*"
+            command ssh "$@"
+            settitle "zsh"
+        }
         ;;
 esac
 
