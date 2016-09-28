@@ -25,6 +25,10 @@ bindkey "^N" history-beginning-search-forward-end
 bindkey "^R" history-incremental-search-backward
 bindkey "^S" history-incremental-search-forward
 
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey "^V" edit-command-line
+
 setopt auto_cd
 setopt auto_pushd
 setopt auto_menu
