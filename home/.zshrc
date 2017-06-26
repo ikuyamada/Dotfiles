@@ -1,5 +1,6 @@
 export LANG=ja_JP.UTF-8
 export MAILCHECK=0
+export LESSCHARSET=utf-8
 
 HISTFILE=$HOME/.zsh-history
 HISTSIZE=3000
