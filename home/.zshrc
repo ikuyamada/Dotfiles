@@ -1,7 +1,3 @@
-export LANG=ja_JP.UTF-8
-export MAILCHECK=0
-export LESSCHARSET=utf-8
-
 HISTFILE=$HOME/.zsh-history
 HISTSIZE=3000
 SAVEHIST=3000
@@ -57,14 +53,8 @@ alias ta="tmux attach"
 alias taa="tmux -CC attach"
 alias p="popd"
 alias py="ipython"
-alias vag="vagrant"
 alias g="grep --binary-files=without-match --colour=always -r --exclude=\*.svn\*"
 alias venv="source .venv/bin/activate"
-
-_fab_list() {
-    reply=(`fab --shortlist`)
-}
-compctl -K _fab_list fab
 
 case ${OSTYPE} in
     darwin*)
