@@ -26,7 +26,6 @@ autoload -z edit-command-line
 zle -N edit-command-line
 bindkey "^V" edit-command-line
 
-setopt auto_cd
 setopt auto_pushd
 setopt auto_menu
 setopt hist_verify
