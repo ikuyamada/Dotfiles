@@ -1,6 +1,6 @@
 HISTFILE=$HOME/.zsh-history
-HISTSIZE=3000
-SAVEHIST=3000
+HISTSIZE=10000
+SAVEHIST=10000
 
 PROMPT="%B%n@%m%%%b "
 RPROMPT="%B[%~]%b"
@@ -43,7 +43,6 @@ compinit -u
 autoload -U colors
 colors
 alias sudo='env PATH=${PATH}:/usr/local/bin:/usr/local/sbin:/sbin:/usr/sbin sudo'
-alias re='screen -D -RR'
 alias du="du -h"
 alias df="df -h"
 alias ll="ls -lh"
@@ -52,7 +51,7 @@ alias ta="tmux attach"
 alias taa="tmux -CC attach"
 alias p="popd"
 alias py="ipython"
-alias g="grep --binary-files=without-match --colour=always -r --exclude=\*.svn\*"
+alias g="grep --binary-files=without-match --colour=always -r --exclude=\*.svn\* --exclude=\*.git\* --exclude=\*.venv\* --exclude=\*.mypy_cache\*"
 alias venv="source .venv/bin/activate"
 
 case ${OSTYPE} in
@@ -72,13 +71,3 @@ case ${OSTYPE} in
         }
         ;;
 esac
-
-function chpwd() {
-    if [ -d .venv ]; then
-        source .venv/bin/activate
-    fi
-}
-
-if [ -d .venv ]; then
-    source .venv/bin/activate
-fi
