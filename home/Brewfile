@@ -1,0 +1,52 @@
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/core"
+brew "git"
+brew "git-lfs"
+brew "grep"
+brew "htop"
+brew "jq"
+brew "xz"
+brew "mackup"
+brew "mas"
+brew "mecab"
+brew "mecab-ipadic"
+brew "mecab-unidic"
+brew "poetry"
+brew "pyenv"
+brew "pyenv-virtualenv"
+brew "ruby"
+brew "vim"
+brew "watch"
+brew "wget"
+brew "zsh"
+cask "1password"
+cask "1password-cli"
+cask "alfred"
+cask "appcleaner"
+cask "dropbox"
+cask "evernote"
+cask "firefox"
+cask "google-chrome"
+cask "google-drive"
+cask "google-japanese-ime"
+cask "iterm2"
+cask "mendeley"
+cask "microsoft-auto-update"
+cask "microsoft-office"
+cask "slack"
+cask "sourcetree"
+cask "sublime-text"
+cask "tunnelblick"
+cask "visual-studio-code"
+cask "zoom"
+mas "GarageBand", id: 682658836
+mas "iMovie", id: 408981434
+mas "Keynote", id: 409183694
+mas "Magnet", id: 441258766
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
+mas "Pixelmator", id: 407963104
+mas "Transmit", id: 1436522307
+mas "Tweetbot", id: 1384080005
+mas "UpNote", id: 1398373917
