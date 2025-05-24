@@ -1,0 +1,105 @@
+function sub() {
+
+    QSUB_ARGS=()
+
+    unset NODE
+    unset CONTAINER
+    unset CONTAINER_OPTIONS
+    unset SCRIPT
+    unset OUTPUT_FILE
+
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -n|--node)
+                NODE="$2"
+                shift
+                shift
+                ;;
+            -c|--container)
+                CONTAINER="$2"
+                shift
+                shift
+                ;;
+            --container_options)
+                CONTAINER_OPTIONS="$2"
+                shift
+                shift
+                ;;
+            -s|--script)
+                SCRIPT="$2"
+                shift
+                shift
+                ;;
+            -o|--out)
+                OUTPUT_FILE="$2"
+                shift
+                shift
+                ;;
+            *)
+                QSUB_ARGS+=("$1")
+                shift
+                ;;
+        esac
+    done
+
+    if [ -z $NODE ]
+        then
+            echo "node must be specified"
+            return 1
+    fi
+
+    if [ -z $CONTAINER ]
+        then
+            echo "container must be specified"
+            return 1
+    fi
+
+    if [ -z $SCRIPT ]
+        then
+            echo "script must be specified"
+            return 1
+    fi
+
+    if [ -z $OUTPUT_FILE ]
+        then
+            mkdir -p out
+            OUTPUT_FILE=out/$(basename $SCRIPT .sh)_$(date +"%Y-%m-%d_%H-%M-%S_%N").txt
+    fi
+
+    SCRIPT_FILE="$(mktemp -p . --suffix .sh)"
+
+    echo "#!/bin/bash" > $SCRIPT_FILE
+    echo "#$ -S /bin/bash" >> $SCRIPT_FILE
+    echo "#$ -cwd" >> $SCRIPT_FILE
+    echo "#$ -jc $NODE" >> $SCRIPT_FILE
+    if [ -z $CONTAINER_OPTIONS ]
+        then
+            echo "#$ -ac d=$CONTAINER" >> $SCRIPT_FILE
+        else
+            echo "#$ -ac d=$CONTAINER,$CONTAINER_OPTIONS" >> $SCRIPT_FILE
+    fi
+    echo "" >> $SCRIPT_FILE
+    echo ". ~/.bash_profile" >> $SCRIPT_FILE
+    echo ". /fefs/opt/dgx/env_set/common_env_set.sh" >> $SCRIPT_FILE
+    echo ". /fefs/opt/dgx/env_set/${CONTAINER}.sh" >> $SCRIPT_FILE
+    #echo "export TRANSFORMERS_OFFLINE=1" >> $SCRIPT_FILE
+    #echo "export HF_DATASETS_OFFLINE=1" >> $SCRIPT_FILE
+    #echo "export HF_EVALUATE_OFFLINE=1" >> $SCRIPT_FILE
+    echo "" >> $SCRIPT_FILE
+
+    cat $SCRIPT >> $SCRIPT_FILE
+
+    echo "====================" > $OUTPUT_FILE
+    echo "SCRIPT FILE: $SCRIPT_FILE"
+    echo "OUTPUT FILE: $OUTPUT_FILE"
+    echo "COMMAND: qsub -o $OUTPUT_FILE -j y $QSUB_ARGS $SCRIPT_FILE" >> $OUTPUT_FILE
+    echo "SCRIPT:" >> $OUTPUT_FILE
+    cat $SCRIPT_FILE >> $OUTPUT_FILE
+    echo "====================" >> $OUTPUT_FILE
+
+    qsub -o $OUTPUT_FILE -j y $QSUB_ARGS $SCRIPT_FILE
+
+    rm -rf $SCRIPT_FILE
+
+    tail -fn1000 $OUTPUT_FILE
+}

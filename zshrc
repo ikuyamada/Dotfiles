@@ -71,5 +71,11 @@ case ${OSTYPE} in
         }
         ;;
 esac
+
+# environment-specific settings
+if [[ "$(hostname)" == *dl-login* ]]; then
+    source .zshrc_raiden
+fi
+
 eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
