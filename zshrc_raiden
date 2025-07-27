@@ -25,6 +25,11 @@ function sub() {
                 shift
                 shift
                 ;;
+            --name)
+                JOB_NAME="$2"
+                shift
+                shift
+                ;;
             -s|--script)
                 SCRIPT="$2"
                 shift
@@ -66,7 +71,12 @@ function sub() {
             OUTPUT_FILE=out/$(basename $SCRIPT .sh)_$(date +"%Y-%m-%d_%H-%M-%S_%N").txt
     fi
 
-    SCRIPT_FILE="$(mktemp -p . --suffix .sh)"
+    if [ -z $JOB_NAME ]
+        then
+            SCRIPT_FILE="$(mktemp -p . --suffix .sh)"
+        else
+            SCRIPT_FILE="${JOB_NAME}.sh"
+    fi
 
     echo "#!/bin/bash" > $SCRIPT_FILE
     echo "#$ -S /bin/bash" >> $SCRIPT_FILE
@@ -81,7 +91,9 @@ function sub() {
     echo "" >> $SCRIPT_FILE
     echo ". ~/.bash_profile" >> $SCRIPT_FILE
     echo ". /fefs/opt/dgx/env_set/common_env_set.sh" >> $SCRIPT_FILE
-    echo ". /fefs/opt/dgx/env_set/${CONTAINER}.sh" >> $SCRIPT_FILE
+    INIT_SHELL_NAME=${CONTAINER/-ubuntu/-cudnn-ubuntu}
+    INIT_SHELL_NAME=${INIT_SHELL_NAME/cuda-/cuda}
+    echo ". /fefs/opt/dgx/env_set/${INIT_SHELL_NAME}.sh" >> $SCRIPT_FILE
     #echo "export TRANSFORMERS_OFFLINE=1" >> $SCRIPT_FILE
     #echo "export HF_DATASETS_OFFLINE=1" >> $SCRIPT_FILE
     #echo "export HF_EVALUATE_OFFLINE=1" >> $SCRIPT_FILE
